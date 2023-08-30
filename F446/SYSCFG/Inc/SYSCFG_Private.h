@@ -1,0 +1,12 @@
+#ifndef SYSCFG_PRIVATE_H_
+#define SYSCFG_PRIVATE_H_
+
+
+#define SYSCFG_REGISTER_SELECTOR		4U
+		
+#define SYSCFG_Bit_SELECTOR				4U
+
+#define EXTI_PORT_MASK				0b1111U
+
+
+#endif

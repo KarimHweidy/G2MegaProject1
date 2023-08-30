@@ -1,0 +1,49 @@
+#ifndef SYSCFG_INTERFACE_H_
+#define SYSCFG_INTERFACE_H_
+
+#include <stdint.h>
+//#include "EXTI_Interface.h"
+
+typedef enum
+{
+	EXTI_PIN0,
+	EXTI_PIN1,
+	EXTI_PIN2,
+	EXTI_PIN3,
+	EXTI_PIN4,
+	EXTI_PIN5,
+	EXTI_PIN6,
+	EXTI_PIN7,
+	EXTI_PIN8,
+	EXTI_PIN9,
+	EXTI_PIN10,
+	EXTI_PIN11,
+	EXTI_PIN12,
+	EXTI_PIN13,
+	EXTI_PIN14,
+	EXTI_PIN15,
+	EXTI_PIN16,
+	EXTI_PIN17,
+	EXTI_PIN18,
+	EXTI_PIN19,
+	EXTI_PIN20,
+	EXTI_PIN21,
+	EXTI_PIN22
+}SYSCFG_NUM_t;
+
+typedef enum
+{
+	S_PORTA=0,
+	S_PORTB,
+	S_PORTC,
+	S_PORTD,
+	S_PORTE,
+	S_PORTF,
+	S_PORTG,
+	S_PORTH
+}SYSCFG_Port_t;
+
+uint8_t SYSCFG_u8SelEXTI_Line(SYSCFG_NUM_t Copy_PinNum,SYSCFG_Port_t Copy_Port);
+
+
+#endif
