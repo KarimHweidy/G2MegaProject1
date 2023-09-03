@@ -208,6 +208,7 @@ typedef struct {
 
 uint8_t USART_u8Init(USART_Handle_t *pUSARTHandle);
 uint8_t USART_u8SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t Length);
+uint8_t USART_u8SendString(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer);
 uint8_t USART_u8ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_t Length);
 uint8_t USART_u8SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate);
 uint8_t USART_u8GetFlagStatus(USART_RegDef_t *pUSARTx, uint8_t StatusFlagName);

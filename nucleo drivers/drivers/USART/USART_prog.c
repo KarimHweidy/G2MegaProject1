@@ -159,6 +159,66 @@ uint8_t USART_u8SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint3
 	return Local_u8ErrorState;
 }
 
+/* @fn				- USART_u8SendString
+ * @brief			- This function send string
+ * @param[in]		- Base address of the USART peripheral
+ * @param[in]		- buffer when send string
+ * @return			- Error state
+ */
+uint8_t USART_u8SendString(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer)
+{
+	
+	uint8_t Local_u8ErrorState = OK;
+
+	if((pUSARTHandle != NULL) && (pTxBuffer != NULL))
+	{
+	uint16_t *pdata;
+   //Loop over tx buffer until reaches \0
+   uint32_t i = 0;
+	while (*pTxBuffer[i] != '\0' ) {
+		//Implement the code to wait until TXE flag is set in the SR
+		while(!USART_u8GetFlagStatus(USARTNUM[pUSARTHandle->USARTx], USART_FLAG_TXE));
+
+         //Check the USART_WordLength item for 9BIT or 8BIT in a frame
+		if (pUSARTHandle->USART_Config.USART_WordLength == USART_WORD_WIDTH_9BITS ) {
+			//if 9BIT, load the DR with 2bytes masking the bits other than first 9 bits
+			pdata = (uint16_t*)pTxBuffer;
+			USARTNUM[pUSARTHandle->USARTx]->DR = (*pdata & (uint16_t)0x01FF);
+
+			//check for USART_ParityControl
+			if (pUSARTHandle->USART_Config.USART_ParityControl == USART_PARITY_DISABLE) {
+				//No parity is used in this transfer. 9bits of user data will be sent
+				//Implement the code to increment pTxBuffer twice
+				pTxBuffer++;
+				pTxBuffer++;
+			}
+			else {
+				//Parity bit is used in this transfer. 8bits of user data will be sent
+				//The 9th bit will be replaced by parity bit by the hardware
+				pTxBuffer++;
+			}
+		}
+		else {
+			//This is 8bit data transfer
+			USARTNUM[pUSARTHandle->USARTx]->DR = (*pTxBuffer  & (uint8_t)0xFF);
+
+			//Implement the code to increment the buffer address
+			pTxBuffer++;
+		}
+		i++;
+	}
+
+	//Implement the code to wait till TC flag is set in the SR
+	while(!USART_u8GetFlagStatus(USARTNUM[pUSARTHandle->USARTx], USART_FLAG_TC));
+	}
+	else
+	{
+		Local_u8ErrorState = NULL_PTR_ERR;
+
+	}
+	return Local_u8ErrorState;
+	
+}
 
 /* @fn				- USART_ReceiveData
  * @brief			- This function receive data
