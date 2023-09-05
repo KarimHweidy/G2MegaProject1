@@ -58,14 +58,14 @@
 #define USART5_BASE_ADDRESS        	0x40005000U
 
 
-
+#define SPI2_BASE_ADDRESS 			0x40003800
 
 /********************* APB2 Peripheral Base Addresses *****************/
 
-#define SYSCFG_BASE_ADDRESS		0x40013800UL
-#define EXTI_BASE_ADDRESS		0x40013C00UL
+#define SYSCFG_BASE_ADDRESS			0x40013800UL
+#define EXTI_BASE_ADDRESS			0x40013C00UL
 
-
+#define SPI1_BASE_ADDRESS 			0x40013000
 /******************* GPIO Register Definition Structure **************/
 
 typedef struct
@@ -204,27 +204,31 @@ typedef struct
 	volatile Stream_RegDef_t Stream[8];
 }DMA_RegDef_t;
 
-
 /************************** SCB Register Definition Structure ***********************/
 
-typedef struct
-{
-	volatile uint32_t CPUID;					/*CPUID base register*/
-	volatile uint32_t ICSR;                  /*Interrupt control and state register*/
-	volatile uint32_t VTOR;                  /*Vector table offset register*/
-	volatile uint32_t AIRCR;                 /*Application interrupt and reset control register*/
-	volatile uint32_t SCR;                   /*System control register*/
-	volatile uint32_t CCR;                   /*Configuration and control register*/
-	volatile uint32_t SHPR[3];               /*System handler priority registers*/
-	volatile uint32_t SHCSR;                 /*System handler control and state register*/
-	volatile uint32_t CFSR;                  /*Configurable fault status register*/
-	volatile uint32_t HFSR;                  /*Hard fault status register*/
-	volatile uint32_t Reserved;
-	volatile uint32_t MMAR;                  /*Memory management fault address register*/
-	volatile uint32_t BFAR;                  /*Bus fault status register*/
-	volatile uint32_t AFSR;                  /*Auxiliary fault status register*/
-}SCB_RegDef_t;
+typedef struct {
+  volatile uint32_t CPUID;   // CPUID Base Register
+  volatile uint32_t ICSR;    // Interrupt Control and State Register
+  volatile uint32_t VTOR;    // Vector Table Offset Register
+  volatile uint32_t AIRCR;   // Application Interrupt and Reset Control Register
+  volatile uint32_t SCR;     // System Control Register
+  volatile uint32_t CCR;     // Configuration and Control Register
+  volatile uint32_t SHPR1;   // System Handler Priority Register 1
+  volatile uint32_t SHPR2;   // System Handler Priority Register 2
+  volatile uint32_t SHPR3;   // System Handler Priority Register 3
+  volatile uint32_t SHCRS;   // System Handler Control and State Register
+  volatile uint32_t CFSR;    // Configurable Fault Status Register
+  /*
+            2B       1B     1B
+  CFSR --> UFSR   | BFSR | MMFSR
 
+  */
+  volatile uint32_t HFSR;    // HardFault Status Register
+  uint32_t RESERVED0;        // Padding to align next register to 32 bits
+  volatile uint32_t MMAR;    // MemManage Fault Address Register
+  volatile uint32_t BFAR;    // BusFault Address Register
+  volatile uint32_t AFSR;    // Auxiliary Fault Status Register
+} SCB_TypeDef;
 
 /***************** USART Register Definition Structure *************/
 typedef struct
@@ -237,6 +241,20 @@ typedef struct
 	volatile uint32_t CR3;
 	volatile uint32_t GTPR;
 }USART_RegDef_t	;
+
+/*************** SPI Register Definition Structure **********/
+typedef struct
+{
+  volatile uint32_t CR1;
+  volatile uint32_t CR2;
+  volatile uint32_t SR;
+  volatile uint32_t DR;
+  volatile uint32_t CRCPR;
+  volatile uint32_t RXCRCR;
+  volatile uint32_t TXCRCR;
+  volatile uint32_t I2SCFGR;
+  volatile uint32_t I2SPR;
+} SPI_RegDef_t;
 
 
 /******************* GPIO Peripheral Definition **************/
@@ -278,7 +296,7 @@ typedef struct
 
 
 /************************ SCB Peripheral Definition **********************/
-#define SCB 				((SCB_RegDef_t*)SCB_BASE_ADDRESS)
+#define SCB ((SCB_TypeDef*)SCB_BASE_ADDRESS)
 
 /******************  USART Peripheral Defination   **************/
 //#define USART1             ((USART_RegDef_t*)USART1_BASE_ADDRESS)
@@ -288,9 +306,13 @@ typedef struct
 #define USART5              ((USART_RegDef_t*)USART5_BASE_ADDRESS)
 //#define USART6             ((USART_RegDef_t*)USART6_BASE_ADDRESS)
 
+/******************  SPI Peripheral Defination   **************/
+#define SPI_1    						((SPI_RegDef_t*)SPI1_BASE_ADDRESS)
+#define SPI_2    						((SPI_RegDef_t*)SPI2_BASE_ADDRESS)
+
 
 
 
 
 #endif
--
+
